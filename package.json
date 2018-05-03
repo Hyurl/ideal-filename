@@ -1,0 +1,30 @@
+{
+  "name": "ideal-filename",
+  "version": "0.1.0",
+  "description": "Gets the ideal filename according to the given one.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "scripts": {
+    "test": "node test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hyurl/ideal-filename.git"
+  },
+  "keywords": [
+    "filename",
+    "auto-increment"
+  ],
+  "author": "Ayon Lee",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hyurl/ideal-filename/issues"
+  },
+  "homepage": "https://github.com/hyurl/ideal-filename#readme",
+  "dependencies": {
+    "lodash": "^4.17.10"
+  }
+}
