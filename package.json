@@ -1,6 +1,6 @@
 {
   "name": "ideal-filename",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Gets the ideal filename according to the given one.",
   "main": "index.js",
   "types": "index.d.ts",
