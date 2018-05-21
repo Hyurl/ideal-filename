@@ -7,6 +7,8 @@
 - `idealFilename(filename: string, extname:? string): Promise<string>`
     - `filename` The original filename.
     - `extname` Sets a specified extension name.
+- `idealFilename(filename: string, callback: (err: Error, filename: string) => void): void;`
+- `idealFilename(filename: string, extname: string, callback: (err: Error, filename: string) => void): void`
 
 This function will check if the given filename already exists, if not, the 
 given filename will be returned, otherwise increase the filename with a number 
@@ -29,4 +31,9 @@ idealFilename("index.js").then(filename => {
     var filename = await idealFilename("index.js");
     console.log(filename);
 })();
+
+// Or 
+idealFilename("index.js", filename => {
+    console.log(filename);
+});
 ```

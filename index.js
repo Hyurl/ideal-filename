@@ -1,38 +1,44 @@
-const fs = require("fs");
-const path = require("path");
-const startsWith = require("lodash/startsWith");
-const endsWith = require("lodash/endsWith");
+var fs = require("fs");
+var path = require("path");
+var startsWith = require("lodash/startsWith");
+var endsWith = require("lodash/endsWith");
 
 /** 
  * Gets the ideal filename according to the given one.
  * @param {string} filename The original filename.
- * @param {string} extname Sets a specified extension name.
- * @return {Promise<string>}
+ * @param {string} [extname] Sets a specified extension name.
+ * @param {(err: Error, filename: stirng) => void} [callback]
+ * @return {Promise<string> | void}
  */
-function idealFilename(filename, extname = "") {
-    return new Promise((resolve, reject) => {
-        fs.exists(filename, exists => {
+function idealFilename(filename, extname, callback) {
+    if (typeof extname == "function") {
+        callback = extname;
+        extname = "";
+    }
+
+    if (callback) {
+        fs.exists(filename, function (exists) {
             if (!exists) {
-                resolve(filename.replace(/\\|\//g, path.sep));
+                callback(null, filename.replace(/\\|\//g, path.sep));
             } else {
                 extname = extname || path.extname(filename);
 
-                let dir = path.dirname(filename),
+                var dir = path.dirname(filename),
                     basename = path.basename(filename, extname),
                     lastNum = 0;
 
                 dir = dir == "." ? "" : dir + path.sep;
 
-                fs.readdir(dir, (err, files) => {
+                fs.readdir(dir, function (err, files) {
                     if (err) {
-                        reject(err);
+                        callback(err, "");
                     } else {
-                        for (let file of files) {
-                            let start = basename + " (",
+                        for (var file of files) {
+                            var start = basename + " (",
                                 end = ")" + extname;
 
                             if (startsWith(file, start) && endsWith(file, end)) {
-                                let num = file.slice(start.length, -end.length);
+                                var num = file.slice(start.length, -end.length);
 
                                 if (!isNaN(num)) {
                                     num = parseInt(num);
@@ -44,12 +50,18 @@ function idealFilename(filename, extname = "") {
                         }
 
                         filename = `${dir}${basename} (${lastNum + 1})${extname}`;
-                        resolve(filename.replace(/\\|\//g, path.sep));
+                        callback(null, filename.replace(/\\|\//g, path.sep));
                     }
                 });
             }
         });
-    });
+    } else {
+        return new Promise(function (resolve, reject) {
+            idealFilename(filename, extname, function (err, filename) {
+                err ? reject(err) : resolve(filename);
+            });
+        });
+    }
 }
 
 module.exports = idealFilename;

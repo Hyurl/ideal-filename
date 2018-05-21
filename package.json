@@ -1,12 +1,9 @@
 {
   "name": "ideal-filename",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Gets the ideal filename according to the given one.",
   "main": "index.js",
   "types": "index.d.ts",
-  "engines": {
-    "node": ">=6.0.0"
-  },
   "scripts": {
     "test": "node test"
   },
